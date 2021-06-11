@@ -1,0 +1,473 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should create a new stack 1`] = `
+Object {
+  "Outputs": Object {
+    "GraphQLAPIKey": Object {
+      "Value": Object {
+        "Fn::GetAtt": Array [
+          "testApiDefaultApiKey15F8C40D",
+          "ApiKey",
+        ],
+      },
+    },
+    "GraphQLAPIURL": Object {
+      "Value": Object {
+        "Fn::GetAtt": Array [
+          "testApiD6ECAB50",
+          "GraphQLUrl",
+        ],
+      },
+    },
+    "StackRegion": Object {
+      "Value": Object {
+        "Ref": "AWS::Region",
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParametersbf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625ArtifactHashC4FE1BA9": Object {
+      "Description": "Artifact hash for asset \\"bf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625\\"",
+      "Type": "String",
+    },
+    "AssetParametersbf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625S3Bucket299BB899": Object {
+      "Description": "S3 bucket for asset \\"bf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625\\"",
+      "Type": "String",
+    },
+    "AssetParametersbf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625S3VersionKeyFA6589ED": Object {
+      "Description": "S3 key for asset version \\"bf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "AppSyncNotesHandler4B870A76": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "AppSyncNotesHandlerServiceRoleDefaultPolicy12C70C4F",
+        "AppSyncNotesHandlerServiceRole34415D7F",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersbf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625S3Bucket299BB899",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625S3VersionKeyFA6589ED",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersbf822fe70184644aca5479b708bb2ded27d10f23a2a573196adb1c0fdba51625S3VersionKeyFA6589ED",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "NOTES_TABLE": Object {
+              "Ref": "cdknotestable9A242DA9",
+            },
+          },
+        },
+        "Handler": "main.handler",
+        "MemorySize": 1024,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "AppSyncNotesHandlerServiceRole34415D7F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "AppSyncNotesHandlerServiceRole34415D7F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "AppSyncNotesHandlerServiceRoleDefaultPolicy12C70C4F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "dynamodb:*",
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "cdknotestable9A242DA9",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AppSyncNotesHandlerServiceRoleDefaultPolicy12C70C4F",
+        "Roles": Array [
+          Object {
+            "Ref": "AppSyncNotesHandlerServiceRole34415D7F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "cdknotestable9A242DA9": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "id",
+            "AttributeType": "S",
+          },
+        ],
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "id",
+            "KeyType": "HASH",
+          },
+        ],
+        "ProvisionedThroughput": Object {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "newCognitoUserPoolEF62E064": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AccountRecoverySetting": Object {
+          "RecoveryMechanisms": Array [
+            Object {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            Object {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": Object {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "AliasAttributes": Array [
+          "email",
+        ],
+        "AutoVerifiedAttributes": Array [
+          "email",
+        ],
+        "EmailVerificationMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+        "EmailVerificationSubject": "Verify your email for our awesome app!",
+        "SmsVerificationMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+        "UserPoolName": "test-userpool",
+        "VerificationMessageTemplate": Object {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+          "EmailSubject": "Verify your email for our awesome app!",
+          "SmsMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testApiD6ECAB50": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AuthenticationType": "API_KEY",
+        "Name": "test-graphql-api",
+        "XrayEnabled": true,
+      },
+      "Type": "AWS::AppSync::GraphQLApi",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testApiDefaultApiKey15F8C40D": Object {
+      "DependsOn": Array [
+        "testApiSchema605199E1",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "Expires": 1654855717,
+      },
+      "Type": "AWS::AppSync::ApiKey",
+    },
+    "testApiSchema605199E1": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "Definition": "
+# This schema defines a notes app with two queries and three mutations for basic CRUD + List functionality.
+type Note {
+  id: ID!
+  name: String!
+  completed: Boolean!
+}
+
+input NoteInput {
+  id: ID!
+  name: String!
+  completed: Boolean!
+}
+
+input UpdateNoteInput {
+  id: ID!
+  name: String
+  completed: Boolean
+}
+
+type Query {
+  getNoteById(noteId: String!): Note
+  listNotes: [Note]
+}
+
+type Mutation {
+  createNote(note: NoteInput!): Note
+  updateNote(note: UpdateNoteInput!): Note
+  deleteNote(noteId: String!): String
+}
+
+type Subscription {
+  onCreateNote: Note
+    @aws_subscribe(mutations: [\\"createNote\\"])
+  onDeleteNote: String
+    @aws_subscribe(mutations: [\\"deleteNote\\"])
+  onUpdateNote: Note
+    @aws_subscribe(mutations: [\\"updateNote\\"])
+}",
+      },
+      "Type": "AWS::AppSync::GraphQLSchema",
+    },
+    "testApilambdaDatasource890DE17F": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "LambdaConfig": Object {
+          "LambdaFunctionArn": Object {
+            "Fn::GetAtt": Array [
+              "AppSyncNotesHandler4B870A76",
+              "Arn",
+            ],
+          },
+        },
+        "Name": "lambdaDatasource",
+        "ServiceRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "testApilambdaDatasourceServiceRoleDE4D28AC",
+            "Arn",
+          ],
+        },
+        "Type": "AWS_LAMBDA",
+      },
+      "Type": "AWS::AppSync::DataSource",
+    },
+    "testApilambdaDatasourceMutationcreateNoteResolverA513CAD3": Object {
+      "DependsOn": Array [
+        "testApilambdaDatasource890DE17F",
+        "testApiSchema605199E1",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "lambdaDatasource",
+        "FieldName": "createNote",
+        "Kind": "UNIT",
+        "TypeName": "Mutation",
+      },
+      "Type": "AWS::AppSync::Resolver",
+    },
+    "testApilambdaDatasourceMutationdeleteNoteResolverFDA551F9": Object {
+      "DependsOn": Array [
+        "testApilambdaDatasource890DE17F",
+        "testApiSchema605199E1",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "lambdaDatasource",
+        "FieldName": "deleteNote",
+        "Kind": "UNIT",
+        "TypeName": "Mutation",
+      },
+      "Type": "AWS::AppSync::Resolver",
+    },
+    "testApilambdaDatasourceMutationupdateNoteResolver4F30B78F": Object {
+      "DependsOn": Array [
+        "testApilambdaDatasource890DE17F",
+        "testApiSchema605199E1",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "lambdaDatasource",
+        "FieldName": "updateNote",
+        "Kind": "UNIT",
+        "TypeName": "Mutation",
+      },
+      "Type": "AWS::AppSync::Resolver",
+    },
+    "testApilambdaDatasourceQuerygetNoteByIdResolver8528F8A5": Object {
+      "DependsOn": Array [
+        "testApilambdaDatasource890DE17F",
+        "testApiSchema605199E1",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "lambdaDatasource",
+        "FieldName": "getNoteById",
+        "Kind": "UNIT",
+        "TypeName": "Query",
+      },
+      "Type": "AWS::AppSync::Resolver",
+    },
+    "testApilambdaDatasourceQuerylistNotesResolver1D2EBE20": Object {
+      "DependsOn": Array [
+        "testApilambdaDatasource890DE17F",
+        "testApiSchema605199E1",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "testApiD6ECAB50",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "lambdaDatasource",
+        "FieldName": "listNotes",
+        "Kind": "UNIT",
+        "TypeName": "Query",
+      },
+      "Type": "AWS::AppSync::Resolver",
+    },
+    "testApilambdaDatasourceServiceRoleDE4D28AC": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "appsync.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testApilambdaDatasourceServiceRoleDefaultPolicy2172EA42": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "AppSyncNotesHandler4B870A76",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testApilambdaDatasourceServiceRoleDefaultPolicy2172EA42",
+        "Roles": Array [
+          Object {
+            "Ref": "testApilambdaDatasourceServiceRoleDE4D28AC",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
