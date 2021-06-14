@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listNotes } from "../graphql/queries";
-import { useState } from 'react';
 import { Button, Paper } from '@material-ui/core';
 import { deleteNote, updateNote } from '../graphql/mutations';
+import CreateNote from "./CreateNote";
 
 type getNotesQuery = {
     listNotes: {[key: string]: any}[];
@@ -80,6 +80,7 @@ const Notes = () => {
                     </Paper>
                 </div>
             )}
+            <CreateNote notes={notes} setNotes={setNotes} />
         </div>
     );
 };

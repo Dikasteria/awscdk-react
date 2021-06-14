@@ -19,8 +19,11 @@ export const updateNote = gql`
 `
 
 export const createNote = gql`
-    mutation createNote($name: String!) {
-        createNote(name: $name)
+    mutation createNote($note: NoteInput!) {
+        createNote(note: $note) {
+            id
+            name
+            completed
+        }
     }
 `
-"Validation error of type VariableTypeMismatch: Variable type 'UpdateNoteInput' doesn't match expected type 'UpdateNoteInput!' @ 'updateNote'"
