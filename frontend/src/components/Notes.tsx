@@ -3,7 +3,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { listNotes } from "../graphql/queries";
 import { useState } from 'react';
 import { Button, Paper } from '@material-ui/core';
-import { deleteNote } from '../graphql/mutations';
+import { deleteNote, updateNote } from '../graphql/mutations';
 
 type getNotesQuery = {
     listNotes: {[key: string]: any}[];
@@ -12,6 +12,10 @@ type getNotesQuery = {
 type deleteNoteMutation = {
     deleteIndexNote: string
 };
+
+type updateNoteQuery = {
+    updateNote: {[key: string]: any},
+}
 
 const Notes = () => {
 
@@ -48,10 +52,17 @@ const Notes = () => {
         }
     };
 
-    const updateComplete = async (index: number) => {
+    const updateComplete = async (index: number, completed: boolean) => {
         try {
-            const upDateNote = notes[index];
-            console.log(upDateNote)
+            const noteToUpdate = notes[index];
+            noteToUpdate['completed'] = !completed;
+            const noteData = await API.graphql(graphqlOperation(updateNote, {note: noteToUpdate})) as {
+                data: updateNoteQuery;
+            };
+            const newNote = noteData.data.updateNote;
+            const newNotesList = [...notes];
+            newNotesList[index] = newNote;
+            setNotes(newNotesList);
         } catch (err) {
             console.log("Error updating note: ", err);
         }
@@ -64,7 +75,7 @@ const Notes = () => {
                     <Paper variant="outlined" elevation={2}>
                         <p>Name: {note.name}</p>
                         <p>Completed: {note.completed.toString()}</p>
-                        <Button onClick={() => updateComplete(idx)} variant="contained" color="primary">Mark {note.completed ? "Incomplete" : "complete"}</Button>
+                        <Button onClick={() => updateComplete(idx, note.completed)} variant="contained" color="primary">Mark {note.completed ? "Incomplete" : "complete"}</Button>
                         <Button onClick={() => deleteThisNote(idx)} variant="contained" color="secondary">Delete</Button>
                     </Paper>
                 </div>
