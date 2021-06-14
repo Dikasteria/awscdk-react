@@ -9,3 +9,8 @@ export const deleteNote = gql`
     }
 `
 
+export const createNote = gql`
+    mutation createNote($name: String!) {
+        createNote(name: $name)
+    }
+`

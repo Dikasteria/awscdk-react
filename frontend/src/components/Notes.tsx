@@ -35,21 +35,27 @@ const Notes = () => {
       }, []);
 
     const deleteThisNote = async (index: number) => {
-        // console.log(index);
         try {
             const noteToDelete = notes[index];
             const noteIndex = noteToDelete['id'];
-            console.log(noteIndex)
-            const noteData = await API.graphql(graphqlOperation(deleteNote, {noteId: noteIndex})) as {
+            await API.graphql(graphqlOperation(deleteNote, {noteId: noteIndex})) as {
                 data: deleteNoteMutation
             };
             const newNoteList = notes.filter((note, idx) => idx !== index);
-            console.log(newNoteList)
             setNotes(newNoteList)
         } catch (err) {
             console.log("Error deleting note: ", err)
         }
-    }
+    };
+
+    const updateComplete = async (index: number) => {
+        try {
+            const upDateNote = notes[index];
+            console.log(upDateNote)
+        } catch (err) {
+            console.log("Error updating note: ", err);
+        }
+    };
 
     return (
         <div>
@@ -58,6 +64,7 @@ const Notes = () => {
                     <Paper variant="outlined" elevation={2}>
                         <p>Name: {note.name}</p>
                         <p>Completed: {note.completed.toString()}</p>
+                        <Button onClick={() => updateComplete(idx)} variant="contained" color="primary">Mark {note.completed ? "Incomplete" : "complete"}</Button>
                         <Button onClick={() => deleteThisNote(idx)} variant="contained" color="secondary">Delete</Button>
                     </Paper>
                 </div>
