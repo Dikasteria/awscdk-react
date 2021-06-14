@@ -71,7 +71,7 @@ const Notes = () => {
     return (
         <div>
             {notes.map((note, idx) => 
-                <div key={idx.toString()} style={{width: "25vw"}}>
+                <div key={idx.toString()} style={{width: "25vw", marginBottom: "1vh"}}>
                     <Paper variant="outlined" elevation={2}>
                         <p>Name: {note.name}</p>
                         <p>Completed: {note.completed.toString()}</p>

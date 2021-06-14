@@ -22,20 +22,24 @@ const CreateNote = ({setNotes, notes}: Props) => {
 
     const submitForm = async (e: any) => {
         e.preventDefault();
-        const newNote = {
-            name: data?.name,
-            id: "21234234hffghfg" + (Math.random() * 12).toString(),
-            completed: "false"
-        };
-        
-        const resp = await API.graphql(graphqlOperation(createNote, {note: newNote})) as {
-            data: createNoteMutation
-        };
-        const noteToAddtoArr = resp.data.createNote
-        const updatedNotesArray = [...notes, noteToAddtoArr];
-        setNotes(updatedNotesArray);
-        setData({name: ""});
 
+        try {
+            const newNote = {
+                name: data?.name,
+                id: "21234234hffghfg" + (Math.random() * 12).toString(),
+                completed: "false"
+            };
+            
+            const resp = await API.graphql(graphqlOperation(createNote, {note: newNote})) as {
+                data: createNoteMutation
+            };
+            const noteToAddtoArr = resp.data.createNote
+            const updatedNotesArray = [...notes, noteToAddtoArr];
+            setNotes(updatedNotesArray);
+            setData({name: ""});
+        } catch (err) {
+            console.log("Error adding new note", err)
+        };
     };
 
     return (
